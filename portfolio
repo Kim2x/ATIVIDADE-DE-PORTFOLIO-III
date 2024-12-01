@@ -1,0 +1,37 @@
+
+CREATE TABLE Projetos (
+    id_projeto INT PRIMARY KEY AUTO_INCREMENT,
+    nome_projeto VARCHAR(255) NOT NULL,
+    data_projeto DATE NOT NULL,
+    status_pedido ENUM('Deferido', 'Indeferido', 'Em análise') NOT NULL
+);
+
+CREATE TABLE Responsaveis (
+    id_responsavel INT PRIMARY KEY AUTO_INCREMENT,
+    nome_responsavel VARCHAR(255) NOT NULL,
+    cpf VARCHAR(14) NOT NULL UNIQUE,
+    telefone VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE Projetos_Responsaveis (
+    id_projeto INT,
+    id_responsavel INT,
+    FOREIGN KEY (id_projeto) REFERENCES Projetos(id_projeto),
+    FOREIGN KEY (id_responsavel) REFERENCES Responsaveis(id_responsavel),
+    PRIMARY KEY (id_projeto, id_responsavel)
+);
+
+CREATE TABLE Relatorios (
+    id_relatorio INT PRIMARY KEY AUTO_INCREMENT,
+    id_projeto INT NOT NULL,
+    informacoes_responsavel TEXT,
+    informacoes_projeto TEXT,
+    FOREIGN KEY (id_projeto) REFERENCES Projetos(id_projeto)
+);
+
+CREATE TABLE Solicitacoes (
+    id_solicitacao INT PRIMARY KEY AUTO_INCREMENT,
+    id_projeto INT NOT NULL,
+    conclusao ENUM('Aprovar', 'Recusar') NOT NULL,
+    FOREIGN KEY (id_projeto) REFERENCES Projetos(id_projeto)
+);
